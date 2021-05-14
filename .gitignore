@@ -1,0 +1,11 @@
+phonlp/models/phonlp_tmp/phonlp.pt
+phonlp/sample_data/pos_valid.txt
+phonlp/sample_data/pos_train.txt
+phonlp/sample_data/pos_test.txt
+phonlp/models/jointmodel/dep.out
+phonlp/sample_data/input.txt
+phonlp/sample_data/dep_valid.conll
+phonlp/sample_data/dep_train.conll
+phonlp/sample_data/dep_test.conll
+phonlp/sample_data/ner_test.txt
+phonlp/sample_data/

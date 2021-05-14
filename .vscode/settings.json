@@ -1,0 +1,5 @@
+{
+    "editor.snippetSuggestions": "bottom",
+    "editor.suggest.snippetsPreventQuickSuggestions": false,
+    "python.pythonPath": "/home/zutnlp/anaconda3/envs/python36/bin/python"
+}

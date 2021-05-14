@@ -1,0 +1,22 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Current File",
+            "cwd": "${workspaceRoot}", // {workspace}:project/,{workspaceRoot}:the running file path 
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "args": ["--mode", "train" ,"--save_dir", "./phonlp/models/phonlp_tmp" ,
+                "--pretrained_lm","vinai/phobert-base", "--lr", "1e-5", "--batch_size", "8", "--num_epoch", "40", 
+                "--lambda_pos", "0.4", "--lambda_ner", "0.2" ,"--lambda_dep", "0.4" ,
+                "--train_file_pos", "../sample_data/pos_train.txt","--eval_file_pos", "../sample_data/pos_valid.txt", 
+                "--train_file_ner", "../sample_data/ner_train.txt","--eval_file_ner", "../sample_data/ner_valid.txt", 
+                "--train_file_dep", "../sample_data/dep_train.conll", "--eval_file_dep", "../sample_data/dep_valid.conll"
+            ]
+        }
+    ]
+}
