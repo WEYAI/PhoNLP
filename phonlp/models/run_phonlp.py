@@ -31,14 +31,14 @@ def parse_args():
     parser.add_argument(
         "--train_file_dep",
         type=str,
-        default="/home/ubuntu/linhnt140/data/VnDTv1.1_predictedPOS/VnDTv1.1-train.conll",
+        default="../sample_data/dep_train.conll",
         help="Input file for data loader.",
     )
 
     parser.add_argument(
         "--eval_file_dep",
         type=str,
-        default="/home/ubuntu/linhnt140/data/VnDTv1.1_predictedPOS/VnDTv1.1-dev.conll",
+        default="../sample_data/dep_valid.conll",
         help="Input file for data loader.",
     )
     parser.add_argument("--output_file_dep", type=str, default="./jointmodel/dep.out", help="Output CoNLL-U file.")
@@ -47,13 +47,13 @@ def parse_args():
     parser.add_argument(
         "--train_file_pos",
         type=str,
-        default="/home/ubuntu/linhnt140/data/POS_data/POS_data/VLSP2013_POS_train.txt",
+        default="../sample_data/pos_train.txt",
         help="Input file for data loader.",
     )
     parser.add_argument(
         "--eval_file_pos",
         type=str,
-        default="/home/ubuntu/linhnt140/data/POS_data/POS_data/VLSP2013_POS_dev.txt",
+        default="../sample_data/pos_valid.txt",
         help="Input file for data loader.",
     )
 
@@ -61,13 +61,13 @@ def parse_args():
     parser.add_argument(
         "--train_file_ner",
         type=str,
-        default="/home/ubuntu/linhnt140/data/NER_data/train.txt",
+        default="../sample_data/ner_train.txt",
         help="Input file for data loader.",
     )
     parser.add_argument(
         "--eval_file_ner",
         type=str,
-        default="/home/ubuntu/linhnt140/data/NER_data/dev.txt",
+        default="../sample_data/ner_valid.txt",
         help="Input file for data loader.",
     )
     # Anotate corpus
@@ -111,6 +111,21 @@ def parse_args():
     parser.add_argument("--pretrained_lm", type=str, default="vinai/phobert-base")
     parser.add_argument("--max_sequence_length", type=int, default=256)
     args = parser.parse_args()
+    args.model = "train"
+    args.save_dir = "./phonlp_tmp"
+    args.pretrained_lm = "vinai/phobert-base"
+    args.lr = 1e-5
+    args.batch_size = 8
+    args.num_epoch = 40
+    args.lambda_pos = 0.4
+    args.lambda_ner = 0.2
+    args.lambda_dep = 0.4
+    args.train_file_pos = "../sample_data/pos_train.txt"
+    args.train_file_ner = "../sample_data/ner_train.txt"
+    args.train_file_dep = "../sample_data/dep_train.conll"
+    args.eval_file_pos = "../sample_data/pos_valid.txt"
+    args.eval_file_ner = "../sample_data/ner_valid.txt"
+    args.eval_file_dep = "../sample_data/dep_valid.conll"
     return args
 
 

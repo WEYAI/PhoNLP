@@ -3,7 +3,6 @@ A trainer class to handle training and testing of models.
 """
 
 import sys
-
 import torch
 from phonlp.models.common import utils as util
 from phonlp.models.common.chuliu_edmonds import chuliu_edmonds_one_root
@@ -40,11 +39,8 @@ def unpack_batch(batch, use_cuda, type):
         sentlens = batch[5]
     return inputs, orig_idx, sentlens
 
-
 class JointTrainer(BaseTrainer):
     """ A trainer for training models. """
-   
-
     def __init__(self, args=None, vocab=None, model_file=None, config_phobert=None, use_cuda=False):
         self.use_cuda = use_cuda
         self.config_phobert = config_phobert
@@ -64,12 +60,14 @@ class JointTrainer(BaseTrainer):
         dep_inputs, dep_number_of_words, dep_orig_idx, dep_sentlens = unpack_batch(
             batch_dep, self.use_cuda, type="dep"
         )
+        # 
         dep_tokens_phobert, dep_first_subword, dep_words_mask, dep_head, dep_deprel = dep_inputs
         pos_inputs, pos_orig_idx, pos_sentlens = unpack_batch(batch_pos, self.use_cuda, type="pos")
         pos_tokens_phobert, pos_first_subword, pos_upos = pos_inputs
+        #           ner batch len=8 index     ner sentlens list 
         ner_inputs, ner_orig_idx, ner_sentlens = unpack_batch(batch_ner, self.use_cuda, type="ner")
         ner_tokens_phobert, ner_first_subword, ner_words_mask, ner_tags = ner_inputs
-
+        #         
         self.model.train()
         loss_pos, loss_ner, loss_dep, loss, _ = self.model.forward(
             dep_tokens_phobert,
@@ -114,10 +112,13 @@ class JointTrainer(BaseTrainer):
             dep_deprel,
             eval=True,
         )
+
         # dependency
         head_seqs = [
             chuliu_edmonds_one_root(adj[:l, :l])[1:] for adj, l in zip(preds[0], dep_sentlens)
-        ]  # remove attachment for the root
+        ]  
+        # remove attachment for the root
+
         deprel_seqs = [
             self.vocab["deprel"].unmap([preds[1][i][j + 1][h] for j, h in enumerate(hs)])
             for i, hs in enumerate(head_seqs)
@@ -179,6 +180,7 @@ class JointTrainer(BaseTrainer):
     def load(self, filename):
         """
         Load a model from file
+
         """
         try:
             checkpoint = torch.load(filename, lambda storage, loc: storage)
