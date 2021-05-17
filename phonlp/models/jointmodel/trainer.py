@@ -69,7 +69,7 @@ class JointTrainer(BaseTrainer):
         ner_tokens_phobert, ner_first_subword, ner_words_mask, ner_tags = ner_inputs
         #         
         self.model.train()
-        loss_pos, loss_ner, loss_dep, loss, _ = self.model.forward(
+        loss_pos, loss_ner, loss, _ = self.model.forward(
             dep_tokens_phobert,
             dep_first_subword,
             dep_words_mask,
@@ -93,9 +93,9 @@ class JointTrainer(BaseTrainer):
         loss_val = loss.data.item()
         loss_val_pos = loss_pos.data.item()
         loss_val_ner = loss_ner.data.item()
-        loss_val_dep = loss_dep.data.item()
+        # loss_val_dep = loss_dep.data.item()
         loss.backward()
-        return loss_val, loss_val_pos, loss_val_ner, loss_val_dep
+        return loss_val, loss_val_pos, loss_val_ner
 
     def predict_dep(self, batch, unsort=True):
         dep_inputs, dep_number_of_words, dep_orig_idx, dep_sentlens = unpack_batch(batch, self.use_cuda, type="dep")

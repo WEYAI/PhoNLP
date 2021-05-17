@@ -83,7 +83,7 @@ def parse_args():
         default="/home/ubuntu/linhnt140/data/annotate/output.txt",
         help="Output file for annotate corpus.",
     )
-
+    # why this is a high priority than args.model = "eval"
     parser.add_argument("--mode", default="train", choices=["train", "eval", "annotate"])
     parser.add_argument("--deep_biaff_hidden_dim", type=int, default=400)
     parser.add_argument("--tag_emb_dim", type=int, default=100)
@@ -112,6 +112,7 @@ def parse_args():
     parser.add_argument("--max_sequence_length", type=int, default=256)
     args = parser.parse_args()
     args.model = "train"
+    # args.model = "eval"
     args.save_dir = "./phonlp_tmp"
     args.pretrained_lm = "vinai/phobert-base"
     args.lr = 1e-5
@@ -123,9 +124,14 @@ def parse_args():
     args.train_file_pos = "../sample_data/pos_train.txt"
     args.train_file_ner = "../sample_data/ner_train.txt"
     args.train_file_dep = "../sample_data/dep_train.conll"
+    # valid 
     args.eval_file_pos = "../sample_data/pos_valid.txt"
     args.eval_file_ner = "../sample_data/ner_valid.txt"
     args.eval_file_dep = "../sample_data/dep_valid.conll"
+    # test 
+    # args.eval_file_pos = "../sample_data/pos_test.txt"
+    # args.eval_file_ner = "../sample_data/ner_test.txt"
+    # args.eval_file_dep = "../sample_data/dep_valid.conll"
     return args
 
 
@@ -290,12 +296,12 @@ def train(args):
             batch_dep = train_batch_dep[i]
             batch_ner = train_batch_ner[i]
             ###
-            loss, loss_pos, loss_ner, loss_dep = trainer.update(
+            loss, loss_pos, loss_ner  = trainer.update(
                 batch_dep, batch_pos, batch_ner, lambda_pos=lambda_pos, lambda_dep=lambda_dep, lambda_ner=lambda_ner
             )  # update step
             train_loss += loss
             train_loss_pos += loss_pos
-            train_loss_dep += loss_dep
+            # train_loss_dep += loss_dep
             train_loss_ner += loss_ner
             ###
 
@@ -491,16 +497,16 @@ def evaluate(args):
     )
 
     print("Start evaluation...")
-    test_preds_dep = []
+    # test_preds_dep = []
     test_preds_upos = []
     test_preds_ner = []
-    for batch in test_batch_dep:
-        preds_dep = trainer.predict_dep(batch)
-        test_preds_dep += preds_dep
-    test_preds_dep = util.unsort(test_preds_dep, test_batch_dep.data_orig_idx_dep)
-    test_batch_dep.doc_dep.set([HEAD, DEPREL], [y for x in test_preds_dep for y in x])
-    CoNLL.dict2conll(test_batch_dep.doc_dep.to_dict(), system_pred_file)
-    _, _, las, uas = score_dep.score(system_pred_file, gold_file)
+    # for batch in test_batch_dep:
+        # preds_dep = trainer.predict_dep(batch)
+        # test_preds_dep += preds_dep
+    # test_preds_dep = util.unsort(test_preds_dep, test_batch_dep.data_orig_idx_dep)
+    # test_batch_dep.doc_dep.set([HEAD, DEPREL], [y for x in test_preds_dep for y in x])
+    # CoNLL.dict2conll(test_batch_dep.doc_dep.to_dict(), system_pred_file)
+    # _, _, las, uas = score_dep.score(system_pred_file, gold_file)
 
     for batch in test_batch_pos:
         preds_pos = trainer.predict_pos(batch)
@@ -513,12 +519,16 @@ def evaluate(args):
         test_preds_ner += preds_ner
     p, r, f1 = score_ner.score_by_entity(test_preds_ner, test_batch_ner.tags)
 
+    # print(
+    #     "{} POS tagging: {:.2f}, NER: {:.2f}, Dependency parsing: {:.2f}/{:.2f}".format(
+    #         "Evaluation results: ", accuracy_pos * 100, f1 * 100, las * 100, uas * 100
+    #     )
+    # )
     print(
-        "{} POS tagging: {:.2f}, NER: {:.2f}, Dependency parsing: {:.2f}/{:.2f}".format(
-            "Evaluation results: ", accuracy_pos * 100, f1 * 100, las * 100, uas * 100
+        "{} POS tagging: {:.2f}, NER: {:.2f}".format(
+            "Evaluation results: ", accuracy_pos * 100, f1 * 100 
         )
     )
-
 
 def annotate(input_file=None, output_file=None, args=None, batch_size=1):
     model_file = args["save_dir"] + "/" + "phonlp.pt"
