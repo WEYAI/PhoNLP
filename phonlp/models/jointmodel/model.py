@@ -21,6 +21,7 @@ class JointModel(BertPreTrainedModel):
         self.input_size = 0
 
         self.phobert = AutoModel.from_pretrained(args["pretrained_lm"], config=self.config)
+        #                               0 +   768
         self.input_size += self.config.to_dict()["hidden_size"]
 
         self.drop_replacement_ner = nn.Parameter(
@@ -109,7 +110,7 @@ class JointModel(BertPreTrainedModel):
 
         inputs = []
         # B*T*H 8*256*768                 8*256 B*T , 
-        phobert_emb = self.phobert(tokens_phobert)[2][-1]
+        phobert_emb = self.phobert(tokens_phobert)[2][-1] # hidden_states
         #                         i=[0,8]                   first_subword: 8*75                       8
         phobert_emb = torch.cat(
             [torch.index_select(phobert_emb[i], 0, first_subword[i]).unsqueeze(0) for i in range(phobert_emb.size(0))],

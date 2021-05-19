@@ -108,13 +108,13 @@ def parse_args():
     parser.add_argument("--cuda", type=bool, default=torch.cuda.is_available())
     parser.add_argument("--cpu", action="store_true", help="Ignore CUDA.")
     # bert
-    parser.add_argument("--pretrained_lm", type=str, default="vinai/phobert-base")
+    parser.add_argument("--pretrained_lm", type=str, default="bert-base-uncased")
     parser.add_argument("--max_sequence_length", type=int, default=256)
     args = parser.parse_args()
     args.model = "train"
     # args.model = "eval"
     args.save_dir = "./phonlp_tmp"
-    args.pretrained_lm = "vinai/phobert-base"
+    args.pretrained_lm = "bert-base-cased"
     args.lr = 1e-5
     args.batch_size = 8
     args.num_epoch = 40
