@@ -121,13 +121,28 @@ def parse_args():
     args.lambda_pos = 0.4
     args.lambda_ner = 0.2
     args.lambda_dep = 0.4
-    args.train_file_pos = "../sample_data/pos_train.txt"
-    args.train_file_ner = "../sample_data/ner_train.txt"
-    args.train_file_dep = "../sample_data/dep_train.conll"
+    
+    
+    # train 
+    args.train_file_pos = "/data/zutnlp/sequence/CoNLL-2003/pos/eng.train.pos.txt"
+    args.train_file_ner = "/data/zutnlp/sequence/CoNLL-2003/ner/eng.train.ner.txt"
+    
     # valid 
-    args.eval_file_pos = "../sample_data/pos_valid.txt"
-    args.eval_file_ner = "../sample_data/ner_valid.txt"
-    args.eval_file_dep = "../sample_data/dep_valid.conll"
+    args.eval_file_pos = "/data/zutnlp/sequence/CoNLL-2003/pos/eng.valid.pos.txt"
+    args.eval_file_ner = "/data/zutnlp/sequence/CoNLL-2003/ner/eng.valid.ner.txt"
+    # test 
+    # args.eval_file_pos = "/data/zutnlp/sequence/CoNLL-2003/ner/eng.test.pos.txt"
+    # args.eval_file_ner = "/data/zutnlp/sequence/CoNLL-2003/ner/eng.test.ner.txt"
+
+    
+    
+    # args.train_file_pos = "../sample_data/pos_train.txt"
+    # args.train_file_ner = "../sample_data/ner_train.txt"
+    # args.train_file_dep = "../sample_data/dep_train.conll"
+    # valid 
+    # args.eval_file_pos = "../sample_data/pos_valid.txt"
+    # args.eval_file_ner = "../sample_data/ner_valid.txt"
+    # args.eval_file_dep = "../sample_data/dep_valid.conll"
     # test 
     # args.eval_file_pos = "../sample_data/pos_test.txt"
     # args.eval_file_ner = "../sample_data/ner_test.txt"
